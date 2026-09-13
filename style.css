@@ -1,0 +1,115 @@
+#resource-display {
+    display: flex;
+    justify-content: space-around;
+    /* flex-direction: column; */
+    p{
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+    }
+}
+table {
+  border: 2px solid rgb(140 140 140);
+  width: 98%;
+  background-color: #444;
+  margin: 1%;
+}
+th {
+  background-color: #222;
+}
+td button {
+  width: 100%;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #999;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}  
+.distabled_button {
+    opacity: 0.5;
+    pointer-events: none;
+    background-color: #444;
+    color: #999;
+}
+th,
+td {
+  border: 1px solid rgb(160 160 160);
+}
+progress {
+  width: 100%;
+  height: 20px;
+  border-radius: 10px;
+  background-color: #e0e0e0;
+}
+#tabs {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    background-color: #222;
+    border-radius: 10px 10px 0 0;
+}
+#main-tab, #upgrades-tab {
+    padding: 20px;
+    background-color: #333;
+    border-radius: 0 0 10px 10px;
+    height: calc(100% - 60px);
+    max-height: 100%;
+}
+.tab-button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+.tab-button.active {
+    background-color: #ccc;
+}
+.distabled {
+    opacity: 0.5;
+    pointer-events: none;
+    display: none;
+}
+body {
+    font-family: Arial, sans-serif;
+    color:#ccc;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+}
+#infinity-meter {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  text-align: center;
+  
+  /* 進捗している部分（バー）の色 */
+  progress::-webkit-progress-value {
+    background-color: #aa0096;
+  }
+
+  /* Firefox用 */
+  progress::-moz-progress-bar {
+    background-color: #aa0096;
+  }
+}
+/* 1. ダブルタップ時のズーム動作を防止 */
+html, body, button, input {
+    touch-action: manipulation;
+}
+
+/* 2. iOS Safari でのフォームタップ時自動ズーム防止 */
+/* (フォントサイズが 16px 未満だと入力時に画面が自動拡大される仕様への対策) */
+input, select, textarea {
+    font-size: 16px;
+}
+
+/* 3. 長押しによるテキスト選択やメニュー表示の抑制（放置ゲーム向け） */
+button {
+    -webkit-user-select: none;
+    user-select: none;
+}

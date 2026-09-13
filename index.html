@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>放置ゲーを作ろう</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/break_eternity.js"></script>
+    <script src="game.js"></script>
+    <script src="tab_change.js"></script>
+</head>
+<body>
+    <section id="game">
+        <section id="header">
+            <h1>放置ゲーを作ろう</h1>
+        </section>
+        <section id="tabs">
+                            <button class="tab-button active" data-tab="main-tab" onclick="changeTab(this)">メイン</button>
+                            <button class="tab-button" data-tab="upgrades-tab" onclick="changeTab(this)">アップグレード</button>
+                            <button id="infinity-tab-button" class="tab-button locked" data-tab="infinity-tab" onclick="changeTab(this)" style="display: none;">Infinity</button>
+        </section>
+        <section id="main-tab" class="tab-content">
+            <div id="resource-display">
+                <p>資源: <span id="resource-count">0</span></p>
+                <p>IP: <span id="ip-count">0</span></p>
+                <p>手動増加: <span id="resource-rate">1</span> / 回</p>
+            </div>
+            <button id="collect-resource" onclick="CollectByHand()">資源を集める</button>
+            <table id="generators-table">
+                <thead>
+                    <tr>
+                        <th>ジェネレーター</th>
+                        <th>進捗</th>
+                        <th>レベル</th>
+                    </tr>
+                </thead>
+                <tbody id="generators-list">
+                    <tr data-generator-id="1">
+                        <td>ジェネレーター1</td>
+                        <td>
+                            <!-- max="100" で100%表示にする -->
+                            <progress data-generator-id="1" class="gen-progress" value="0" max="100"></progress>
+                        </td>
+                        <!-- レベル表示 -->
+                        <td><span data-generator-id="1" class="gen-level">0</span></td>
+                    </tr>
+                    <tr data-generator-id="2">
+                        <td>ジェネレーター2</td>
+                        <td>
+                            <!-- max="100" で100%表示にする -->
+                            <progress data-generator-id="2" class="gen-progress" value="0" max="100"></progress>
+                        </td>
+                        <!-- レベル表示 -->
+                        <td><span data-generator-id="2" class="gen-level">0</span></td>
+                    </tr>
+                    <tr data-generator-id="3">
+                        <td>ジェネレーター3</td>
+                        <td>
+                            <!-- max="100" で100%表示にする -->
+                            <progress data-generator-id="3" class="gen-progress" value="0" max="100"></progress>
+                        </td>
+                        <!-- レベル表示 -->
+                        <td><span data-generator-id="3" class="gen-level">0</span></td>
+                    </tr>
+                    <tr data-generator-id="4">
+                        <td>ジェネレーター4</td>
+                        <td>
+                            <!-- max="100" で100%表示にする -->
+                            <progress data-generator-id="4" class="gen-progress" value="0" max="100"></progress>
+                        </td>
+                        <!-- レベル表示 -->
+                        <td><span data-generator-id="4" class="gen-level">0</span></td>
+                    </tr>
+                    <tr data-generator-id="5">
+                        <td>ジェネレーター5</td>
+                        <td>
+                            <!-- max="100" で100%表示にする -->
+                            <progress data-generator-id="5" class="gen-progress" value="0" max="100"></progress>
+                        </td>
+                        <!-- レベル表示 -->
+                        <td><span data-generator-id="5" class="gen-level">0</span></td>
+                    </tr>
+                    <tr data-generator-id="6">
+                        <td>ジェネレーター6</td>
+                        <td>
+                            <!-- max="100" で100%表示にする -->
+                            <progress data-generator-id="6" class="gen-progress" value="0" max="100"></progress>
+                        </td>
+                        <!-- レベル表示 -->
+                        <td><span data-generator-id="6" class="gen-level">0</span></td>
+                    </tr>
+                    <tr data-generator-id="7">
+                        <td>ジェネレーター7</td>
+                        <td>
+                            <!-- max="100" で100%表示にする -->
+                            <progress data-generator-id="7" class="gen-progress" value="0" max="100"></progress>
+                        </td>
+                        <!-- レベル表示 -->
+                        <td><span data-generator-id="7" class="gen-level">0</span></td>
+                    </tr>
+                    <tr data-generator-id="8">
+                        <td>ジェネレーター8</td>
+                        <td>
+                            <!-- max="100" で100%表示にする -->
+                            <progress data-generator-id="8" class="gen-progress" value="0" max="100"></progress>
+                        </td>
+                        <!-- レベル表示 -->
+                        <td><span data-generator-id="8" class="gen-level">0</span></td>
+                    </tr>
+                    <tr data-generator-id="9">
+                        <td>ジェネレーター9</td>
+                        <td>
+                            <!-- max="100" で100%表示にする -->
+                            <progress data-generator-id="9" class="gen-progress" value="0" max="100"></progress>
+                        </td>
+                        <!-- レベル表示 -->
+                        <td><span data-generator-id="9" class="gen-level">0</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="upgrades-tab" class="tab-content" style="display: none;">
+            <table id="upgrades-table">
+                <thead>
+                    <tr>
+                        <th>レベル</th>
+                        <th>コスト</th>
+                        <th>効果</th>
+                        <th>購入</th>
+                    </tr>
+                </thead>
+                <tbody id="upgrades-list">
+                    <!-- tr に data 属性を持たせる -->
+                    <tr data-type="hand">
+                        <td class="updates-count">0</td>
+                        <td class="updates-cost">10</td>
+                        <td class="updates-effect">手動収入: <span class="effect-before">1</span>/回 → <span class="effect-after">2</span>/回</td>
+                        <td class="updates-purchase"><button onclick="buyUpgrade(this)">購入</button></td>
+                    </tr>
+                    <tr data-type="generators" data-generator-id="1">
+                        <td class="updates-count">0</td>
+                        <td class="updates-cost">10</td>
+                        <td class="updates-effect">ジェネレーター1: <span class="effect-before">0</span>/秒 → <span class="effect-after">1</span>/秒</td>
+                        <td class="updates-purchase"><button onclick="buyUpgrade(this)">購入</button></td>
+                    </tr>
+                    <tr data-type="generators" data-generator-id="2">
+                        <td class="updates-count">0</td>
+                        <td class="updates-cost">100</td>
+                        <td class="updates-effect">ジェネレーター2: <span class="effect-before">0</span>/秒 → <span class="effect-after">10</span>/秒</td>
+                        <td class="updates-purchase"><button onclick="buyUpgrade(this)">購入</button></td>
+                    </tr>
+                    <tr data-type="generators" data-generator-id="3">
+                        <td class="updates-count">0</td>
+                        <td class="updates-cost">1000</td>
+                        <td class="updates-effect">ジェネレーター3: <span class="effect-before">0</span>/秒 → <span class="effect-after">100</span>/秒</td>
+                        <td class="updates-purchase"><button onclick="buyUpgrade(this)">購入</button></td>
+                    </tr>
+                    <tr data-type="generators" data-generator-id="4">
+                        <td class="updates-count">0</td>
+                        <td class="updates-cost">100000</td>
+                        <td class="updates-effect">ジェネレーター4: <span class="effect-before">0</span>/秒 → <span class="effect-after">1000</span>/秒</td>
+                        <td class="updates-purchase"><button onclick="buyUpgrade(this)">購入</button></td>
+                    </tr>
+                    <tr data-type="generators" data-generator-id="5">
+                        <td class="updates-count">0</td>
+                        <td class="updates-cost">1e10</td>
+                        <td class="updates-effect">ジェネレーター5: <span class="effect-before">0</span>/秒 → <span class="effect-after">10000</span>/秒</td>
+                        <td class="updates-purchase"><button onclick="buyUpgrade(this)">購入</button></td>
+                    </tr>
+                    <tr data-type="generators" data-generator-id="6">
+                        <td class="updates-count">0</td>
+                        <td class="updates-cost">1e20</td>
+                        <td class="updates-effect">ジェネレーター6: <span class="effect-before">0</span>/秒 → <span class="effect-after">100000</span>/秒</td>
+                        <td class="updates-purchase"><button onclick="buyUpgrade(this)">購入</button></td>
+                    </tr>
+                    <tr data-type="generators" data-generator-id="7">
+                        <td class="updates-count">0</td>
+                        <td class="updates-cost">1e30</td>
+                        <td class="updates-effect">ジェネレーター7: <span class="effect-before">0</span>/秒 → <span class="effect-after">1000000</span>/秒</td>
+                        <td class="updates-purchase"><button onclick="buyUpgrade(this)">購入</button></td>
+                    </tr>
+                    <tr data-type="generators" data-generator-id="8">
+                        <td class="updates-count">0</td>
+                        <td class="updates-cost">1e50</td>
+                        <td class="updates-effect">ジェネレーター8: <span class="effect-before">0</span>/秒 → <span class="effect-after">10000000</span>/秒</td>
+                        <td class="updates-purchase"><button onclick="buyUpgrade(this)">購入</button></td>
+                    </tr>
+                    <tr data-type="generators" data-generator-id="9">
+                        <td class="updates-count">0</td>
+                        <td class="updates-cost">1e100</td>
+                        <td class="updates-effect">ジェネレーター9: <span class="effect-before">0</span>/秒 → <span class="effect-after">100000000</span>/秒</td>
+                        <td class="updates-purchase"><button onclick="buyUpgrade(this)">購入</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section> 
+    </section>
+    <section id="infinity-tab" class="tab-content" style="display: none;">
+    <h2 style="color: #aa0096;">Infinity</h2>
+    <p>Infinity Points (IP): <span id="infinity-tab-ip-count">0</span></p>
+    
+    <!-- 手動インフィニティボタン（ブレイクインフィニティ用など） -->
+    <button id="infinity-button" onclick="infinity()" style="margin-bottom: 20px; padding: 10px; background-color: #aa0096;">infinity (リセットしてIP獲得)</button>
+
+    <h3>Infinity アップグレード</h3>
+    <table id="ip-upgrades-table">
+        <thead>
+            <tr>
+                <th>レベル</th>
+                <th>コスト (IP)</th>
+                <th>効果</th>
+                <th>購入</th>
+            </tr>
+        </thead>
+        <tbody id="ip-upgrades-list">
+            <tr data-type="ip" data-ip-id="1">
+                <td class="updates-count">0</td>
+                <td class="updates-cost" data-raw-cost="1">1 IP</td>
+                <td class="updates-effect">全生産量: <span class="effect-before">1</span>倍 → <span class="effect-after">2</span>倍</td>
+                <td class="updates-purchase"><button onclick="buyIPUpgrade(this)">購入</button></td>
+            </tr>
+            <tr data-type="ip" data-ip-id="2">
+                <td class="updates-count">0</td>
+                <td class="updates-cost" data-raw-cost="2">2 IP</td>
+                <td class="updates-effect">生成スピード: <span class="effect-before">1</span>倍 → <span class="effect-after">1.5</span>倍</td>
+                <td class="updates-purchase"><button onclick="buyIPUpgrade(this)">購入</button></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section id ="infinity-meter">
+        <p>infinityまで: <span id="infinity-meter-value">0</span> %<progress id="infinity-progress" value="0" max="100"></progress></p>
+    </section>
+    
+</body>
+</html>
